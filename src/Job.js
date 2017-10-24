@@ -52,6 +52,7 @@ module.exports = function (grunt) {
     this.sauceConfig = runner.sauceConfig;
     this.tunneled = runner.tunneled;
     this.tunnelId = runner.tunnelId;
+    this.browser = browser;
   };
 
   /**
@@ -66,7 +67,7 @@ module.exports = function (grunt) {
       method: 'POST',
       url: ['https://saucelabs.com/rest/v1', this.user, 'js-tests'].join('/'),
       auth: { user: this.user, pass: this.key() },
-      json: {
+      json: _.assign({
         platforms: [this.platform],
         url: this.url,
         framework: this.framework,
@@ -74,7 +75,7 @@ module.exports = function (grunt) {
         public: this.public,
         tags: this.tags,
         name: this.testName
-      }
+      }, this.browser)
     };
     _.merge(requestParams.json, this.sauceConfig);
 
